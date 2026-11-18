@@ -264,7 +264,7 @@
 <section>
   <div class="section-label">Presentaciones y precio</div>
   <h2>Precio de Wegovy en tabletas en México</h2>
-  <p class="lead">El tratamiento inicia con 1.5 mg el primer mes y sube a 4 mg el segundo mes. Después tu médico decide si avanzas a 9 mg y a la dosis de mantenimiento de 25 mg. Para las dosis que no tengamos en stock, pregúntanos por WhatsApp.</p>
+  <p class="lead">El tratamiento inicia con 1.5 mg el primer mes y sube a 4 mg el segundo mes. Después tu médico decide si avanzas a 9 mg y a la dosis de mantenimiento de 25 mg. Las presentaciones de 9 y 25 mg llegarán próximamente; escríbenos por WhatsApp y te avisamos.</p>
   <div class="table-wrap">
     <table class="dosis-table">
       <thead><tr><th>Presentación</th><th>Contenido</th><th>Etapa habitual</th><th>Precio (MXN)</th></tr></thead>
@@ -379,7 +379,7 @@
   /* =========================================================
      ÚNICA SECCIÓN QUE SE EDITA
      precio: escribe el número sin signo ni comas, ej. "2888".
-             Déjalo vacío "" para mostrar "Bajo pedido".
+             Déjalo vacío "" para mostrar "Próximamente".
      url:    liga del producto en santaclarafarmacias.com.
              Déjala vacía "" para mandar a WhatsApp.
      ========================================================= */
@@ -392,9 +392,10 @@
   var WHATSAPP = "525532030830";
   /* ========================================================= */
 
-  function fmt(p) { return p ? "$" + Number(p).toLocaleString("es-MX") : "Bajo pedido"; }
+  function fmt(p) { return p ? "$" + Number(p).toLocaleString("es-MX") : "Próximamente"; }
   function waLink(mg) {
-    var t = mg ? "Hola, quiero pedir Wegovy tabletas " + mg + " mg. Tengo receta." : "Hola, quiero información sobre Wegovy en tabletas.";
+    var d0 = DOSIS.filter(function (x) { return x.mg === mg; })[0];
+    var t = mg ? (d0 && !d0.precio ? "Hola, avísenme cuando llegue Wegovy tabletas " + mg + " mg." : "Hola, quiero pedir Wegovy tabletas " + mg + " mg. Tengo receta.") : "Hola, quiero información sobre Wegovy en tabletas.";
     return "https://wa.me/" + WHATSAPP + "?text=" + encodeURIComponent(t);
   }
   var grid = document.getElementById("dosis-grid");
@@ -421,7 +422,7 @@
     Array.prototype.forEach.call(grid.children, function (el, j) { el.classList.toggle("active", j === i); });
     document.getElementById("monto").textContent = fmt(d.precio);
     document.getElementById("dosis-label").textContent = d.mg + " mg · 30 tabletas";
-    document.getElementById("cta-texto").textContent = d.url ? "Comprar " + d.mg + " mg" : "Pedir " + d.mg + " mg por WhatsApp";
+    document.getElementById("cta-texto").textContent = d.url ? "Comprar " + d.mg + " mg" : "Avísame cuando llegue " + d.mg + " mg";
     actualizarLigas();
   }
 
